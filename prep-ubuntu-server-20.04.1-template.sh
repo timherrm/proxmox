@@ -55,7 +55,7 @@ cat << 'EOL' | sudo tee /etc/rc.local
 #
 # By default this script does nothing.
 # dynamically create hostname (optional)
-if hostname | grep localhost; then
+if hostname | grep ubuntu-server-template; then
     hostnamectl set-hostname "$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 13 ; echo '')"
 fi
 test -f /etc/ssh/ssh_host_dsa_key || dpkg-reconfigure openssh-server
@@ -69,7 +69,7 @@ chmod +x /etc/rc.local
 # prevent cloudconfig from preserving the original hostname
 sed -i 's/preserve_hostname: false/preserve_hostname: true/g' /etc/cloud/cloud.cfg
 truncate -s0 /etc/hostname
-hostnamectl set-hostname localhost
+hostnamectl set-hostname ubuntu-server-template
 
 #cleanup apt
 apt autoremove -y
@@ -87,4 +87,4 @@ cat /dev/null > ~/.bash_history && history -c
 history -w
 
 #shutdown
-#init 0
+init 0
