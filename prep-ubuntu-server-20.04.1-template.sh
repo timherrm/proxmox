@@ -59,6 +59,8 @@ if hostname | grep ubuntu-server-template; then
     hostnamectl set-hostname "$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 13 ; echo '')"
 fi
 test -f /etc/ssh/ssh_host_dsa_key || dpkg-reconfigure openssh-server
+#lvextend -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv
+#resize2fs -p /dev/mapper/ubuntu--vg-ubuntu--lv
 exit 0
 EOL
 
