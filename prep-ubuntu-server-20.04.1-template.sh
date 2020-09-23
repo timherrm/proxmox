@@ -6,7 +6,7 @@
 # TESTED ON UBUNTU 20.04.1 Server
 
 # SETUP & RUN
-# curl -sL  | sudo -E bash -
+# curl -sL https://raw.githubusercontent.com/timherrm/proxmox/master/prep-ubuntu-server-20.04.1-template.sh | sudo -E bash -
 
 if [ `id -u` -ne 0 ]; then
 	echo Need sudo
