@@ -22,17 +22,6 @@ apt dist-upgrade -y
 #install packages
 apt install qemu-guest-agent vim openssh-server -y
 
-#Stop services for cleanup
-service rsyslog stop
-
-#clear audit logs
-if [ -f /var/log/wtmp ]; then
-    truncate -s0 /var/log/wtmp
-fi
-if [ -f /var/log/lastlog ]; then
-    truncate -s0 /var/log/lastlog
-fi
-
 #cleanup /tmp directories
 rm -rf /tmp/*
 rm -rf /var/tmp/*
@@ -54,24 +43,16 @@ cat << 'EOL' | sudo tee /etc/rc.local
 # bits.
 #
 # By default this script does nothing.
-# dynamically create hostname (optional)
 if hostname | grep ubuntu-server-template; then
     hostnamectl set-hostname "$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 13 ; echo '')"
+    systemd-machine-id-setup
 fi
 test -f /etc/ssh/ssh_host_dsa_key || dpkg-reconfigure openssh-server
-#lvextend -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv
-#resize2fs -p /dev/mapper/ubuntu--vg-ubuntu--lv
 exit 0
 EOL
 
 # make sure the script is executable
 chmod +x /etc/rc.local
-
-#reset hostname
-# prevent cloudconfig from preserving the original hostname
-sed -i 's/preserve_hostname: false/preserve_hostname: true/g' /etc/cloud/cloud.cfg
-truncate -s0 /etc/hostname
-hostnamectl set-hostname ubuntu-server-template
 
 #cleanup apt
 apt autoremove -y
@@ -83,6 +64,13 @@ sudo sed -ri '/\sswap\s/s/^#?/#/' /etc/fstab
 
 # cleans out all of the cloud-init cache / logs - this is mainly cleaning out networking info
 sudo cloud-init clean --logs
+
+#extend filesystem
+lvextend -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv
+resize2fs -p /dev/mapper/ubuntu--vg-ubuntu--lv
+
+#reset machine id
+rm /etc/machine-id
 
 #cleanup shell history
 cat /dev/null > ~/.bash_history && history -c
