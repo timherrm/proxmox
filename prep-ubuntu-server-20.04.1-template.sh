@@ -46,7 +46,7 @@ cat << 'EOL' | sudo tee /etc/rc.local
 if hostname | grep ubuntu-server-template; then
     newname="$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 13 ; echo '')"
     hostnamectl set-hostname $newname
-    sed -i 's/ubuntu-server-template/$newname/g' /etc/hosts
+    sed -i 's/ubuntu-server-template/'"$newname"'/g' /etc/hosts
     systemd-machine-id-setup
 fi
 test -f /etc/ssh/ssh_host_dsa_key || dpkg-reconfigure openssh-server
