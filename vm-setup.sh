@@ -46,5 +46,13 @@ echo $'[sshd]\nenabled = true\nmode = aggressive\nbantime = 10y\nfindtime = 1d\n
 #set timezone
 timedatectl set-timezone Europe/Berlin
 
+echo 'if [ "`id -u`" -eq 0 ]; then
+    PS1="\[\e[0;38;5;197m\]\u\[\e[0;2;38;5;250m\]@\[\e[0;38;5;74m\]\h \[\e[0;38;5;157m\][\[\e[0;38;5;157m\]\W\[\e[0;38;5;157m\]] \[\e[0;2;38;5;250m\]\$ \[\e[0m\]"
+else
+    PS1="\[\e[0;38;5;209m\]\u\[\e[0;2;38;5;250m\]@\[\e[0;38;5;74m\]\h \[\e[0;38;5;157m\][\[\e[0;38;5;157m\]\W\[\e[0;38;5;157m\]] \[\e[0;2;38;5;250m\]\$ \[\e[0m\]"
+fi' | tee -a /home/timherrm/.bashrc | tee -a /root/.bashrc >/dev/null
+
+
+
 reboot
 
