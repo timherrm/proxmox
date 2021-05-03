@@ -11,6 +11,7 @@ passwd timherrm
 
 #apt 
 apt update
+do-release-upgrade
 apt dist-upgrade -y
 apt install vim unattended-upgrades qemu-guest-agent fail2ban -y
 
