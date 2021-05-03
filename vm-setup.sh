@@ -52,6 +52,8 @@ else
     PS1="\[\e[0;38;5;209m\]\u\[\e[0;2;38;5;250m\]@\[\e[0;38;5;74m\]\h \[\e[0;38;5;157m\][\[\e[0;38;5;157m\]\W\[\e[0;38;5;157m\]] \[\e[0;2;38;5;250m\]\$ \[\e[0m\]"
 fi' | tee -a /home/timherrm/.bashrc | tee -a /root/.bashrc >/dev/null
 
+echo '"\e[A": history-search-backward
+"\e[B": history-search-forward' | tee -a /home/timherrm/.inputrc | tee -a /root/.inputrc >/dev/null
 
 
 reboot
