@@ -6,9 +6,6 @@ if [ `id -u` -ne 0 ]; then
 	exit 1
 fi
 
-#set new password
-passwd timherrm
-
 #apt 
 apt update
 do-release-upgrade
