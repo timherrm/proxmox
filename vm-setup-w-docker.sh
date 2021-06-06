@@ -1,5 +1,5 @@
 # SETUP & RUN
-# curl -sL https://raw.githubusercontent.com/timherrm/proxmox/master/vm-setup.sh | sudo -E bash -
+# curl -sL https://raw.githubusercontent.com/timherrm/proxmox/master/vm-setup-w-docker.sh | sudo -E bash -
 
 if [ `id -u` -ne 0 ]; then
 	echo Need sudo
