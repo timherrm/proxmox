@@ -19,9 +19,13 @@ echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] 
 apt update
 apt install docker-ce docker-ce-cli containerd.io -y
 
+#mount nfs share
+mkdir /dockerdata
+echo "10.0.40.186:/mnt/virtio1/$HOSTNAME /dockerdata nfs defaults 0 0" >> /etc/fstab
+mount /dockerdata
+
 #portainer
-docker volume create portainer_data
-docker run -d -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce
+docker run -d -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /dockerdata/portainer/data:/data portainer/portainer-ce
 
 #apt cleanup
 apt autoremove -y
@@ -30,10 +34,6 @@ apt autoclean -y
 #config unattended-upgrades
 sed -i 's/0/1/g' /etc/apt/apt.conf.d/10periodic
 sed -i 's/^\/\/.*-updates.*$/        "${distro_id}:${distro_codename}-updates";/g' /etc/apt/apt.conf.d/50unattended-upgrades
-
-#mount nfs share
-mkdir /dockerdata
-echo "10.0.40.186:/mnt/virtio1/$HOSTNAME /dockerdata nfs defaults 0 0" >> /etc/fstab
 
 #config vim
 echo "colorscheme murphy" > /etc/vim/vim.local
