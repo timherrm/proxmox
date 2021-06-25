@@ -10,7 +10,7 @@ fi
 apt update
 do-release-upgrade
 apt dist-upgrade -y
-apt install vim unattended-upgrades qemu-guest-agent fail2ban -y
+apt install vim unattended-upgrades qemu-guest-agent fail2ban nfs-common -y
 
 #docker
 apt install apt-transport-https ca-certificates curl gnupg lsb-release -y
@@ -30,6 +30,10 @@ apt autoclean -y
 #config unattended-upgrades
 sed -i 's/0/1/g' /etc/apt/apt.conf.d/10periodic
 sed -i 's/^\/\/.*-updates.*$/        "${distro_id}:${distro_codename}-updates";/g' /etc/apt/apt.conf.d/50unattended-upgrades
+
+#mount nfs share
+mkdir /dockerdata
+echo "10.0.40.186:/mnt/virtio1/$HOSTNAME /dockerdata nfs defaults 0 0" >> /etc/fstab
 
 #config vim
 echo "colorscheme murphy" > /etc/vim/vim.local
