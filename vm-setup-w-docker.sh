@@ -6,6 +6,10 @@ if [ `id -u` -ne 0 ]; then
 	exit 1
 fi
 
+#read passwords
+echo Docker SMB Password:
+read dockermountpw
+
 #apt 
 apt update
 do-release-upgrade
@@ -23,7 +27,7 @@ usermod -aG docker timherrm
 #mount SMB share
 echo "user=docker\npassword=$dockermountpw" > /root/.smbcredentials
 mkdir /dockerdata
-echo "\\10.0.40.186\$HOSTNAME /dockerdata cifs credentials=/root/.smbcredentials,iocharset=utf8,vers=3.0,sec=ntlmssp 0 0" >> /etc/fstab
+echo "\\\\10.0.40.186\\$HOSTNAME /dockerdata cifs credentials=/root/.smbcredentials,iocharset=utf8,vers=3.0,sec=ntlmssp 0 0" >> /etc/fstab
 mount /dockerdata
 
 #resize LV
