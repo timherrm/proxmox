@@ -18,6 +18,7 @@ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o 
 echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 apt update
 apt install docker-ce docker-ce-cli containerd.io -y
+usermod -aG docker timherrm
 
 #mount nfs share
 mkdir /dockerdata
@@ -57,5 +58,5 @@ echo '"\e[A": history-search-backward
 "\e[B": history-search-forward' | tee -a /home/timherrm/.inputrc | tee -a /root/.inputrc >/dev/null
 
 
-reboot
+#reboot
 
