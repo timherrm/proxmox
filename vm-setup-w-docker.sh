@@ -1,4 +1,6 @@
 # SETUP & RUN
+# export dockermountpw=
+# export portainerpw=
 # curl -sL https://raw.githubusercontent.com/timherrm/proxmox/master/vm-setup-w-docker.sh | sudo -E bash -
 
 if [ `id -u` -ne 0 ]; then
@@ -30,7 +32,9 @@ mount /dockerdata
 lvextend -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv
 
 #portainer
-docker run -d -p 9000:9000 --name=$HOSTNAME-portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /dockerdata/$HOSTNAME-portainer/data:/data portainer/portainer-ce
+mkdir -p /dockerdata/$HOSTNAME-portainer/config
+echo -e "$portainerpw" > /dockerdata/$HOSTNAME-portainer/config/portainer_password
+docker run -d -p 9000:9000 --name=$HOSTNAME-portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /dockerdata/$HOSTNAME-portainer/data:/data -v /dockerdata/$HOSTNAME-portainer/config/portainer_password:/portainer_password:ro portainer/portainer-ce --admin-password-file portainer_password
 
 #apt cleanup
 apt autoremove -y
