@@ -6,10 +6,6 @@ if [ `id -u` -ne 0 ]; then
 	exit 1
 fi
 
-#read passwords
-echo Docker SMB Password:
-read dockermountpw
-
 #apt 
 apt update
 do-release-upgrade
