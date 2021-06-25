@@ -10,7 +10,7 @@ fi
 apt update
 do-release-upgrade
 apt dist-upgrade -y
-apt install vim unattended-upgrades qemu-guest-agent fail2ban nfs-common -y
+apt install vim unattended-upgrades qemu-guest-agent fail2ban cifs-utils -y
 
 #docker
 apt install apt-transport-https ca-certificates curl gnupg lsb-release -y
@@ -20,9 +20,10 @@ apt update
 apt install docker-ce docker-ce-cli containerd.io -y
 usermod -aG docker timherrm
 
-#mount nfs share
+#mount SMB share
+echo "user=docker\npassword=changeme" > /root/.smbcredentials
 mkdir /dockerdata
-echo "10.0.40.186:/mnt/virtio1/$HOSTNAME /dockerdata nfs defaults 0 0" >> /etc/fstab
+echo "\\10.0.40.186\$HOSTNAME /dockerdata cifs credentials=/root/.smbcredentials,iocharset=utf8,vers=3.0,sec=ntlmssp 0 0" >> /etc/fstab
 mount /dockerdata
 
 #resize LV
