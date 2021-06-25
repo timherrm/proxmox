@@ -21,7 +21,7 @@ apt install docker-ce docker-ce-cli containerd.io -y
 usermod -aG docker timherrm
 
 #mount SMB share
-echo "user=docker\npassword=changeme" > /root/.smbcredentials
+echo "user=docker\npassword=$dockermountpw" > /root/.smbcredentials
 mkdir /dockerdata
 echo "\\10.0.40.186\$HOSTNAME /dockerdata cifs credentials=/root/.smbcredentials,iocharset=utf8,vers=3.0,sec=ntlmssp 0 0" >> /etc/fstab
 mount /dockerdata
