@@ -11,7 +11,7 @@ fi
 apt update
 do-release-upgrade
 apt dist-upgrade -y
-apt install vim unattended-upgrades qemu-guest-agent fail2ban -y
+apt install vim unattended-upgrades qemu-guest-agent fail2ban mlocate -y
 
 #docker
 apt install apt-transport-https ca-certificates curl gnupg lsb-release -y
