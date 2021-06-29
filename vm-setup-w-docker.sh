@@ -1,5 +1,4 @@
 # SETUP & RUN
-# export dockermountpw=
 # export portainerpw=
 # curl -sL https://raw.githubusercontent.com/timherrm/proxmox/master/vm-setup-w-docker.sh | sudo -E bash -
 
@@ -12,7 +11,7 @@ fi
 apt update
 do-release-upgrade
 apt dist-upgrade -y
-apt install vim unattended-upgrades qemu-guest-agent fail2ban cifs-utils -y
+apt install vim unattended-upgrades qemu-guest-agent fail2ban -y
 
 #docker
 apt install apt-transport-https ca-certificates curl gnupg lsb-release -y
@@ -22,19 +21,13 @@ apt update
 apt install docker-ce docker-ce-cli containerd.io -y
 usermod -aG docker timherrm
 
-#mount SMB share
-echo -e "user=docker\npassword=$dockermountpw" > /root/.smbcredentials
-mkdir /dockerdata
-echo "\\\\10.0.40.186\\$HOSTNAME /dockerdata cifs credentials=/root/.smbcredentials,iocharset=utf8,vers=3.0,sec=ntlmssp 0 0" >> /etc/fstab
-mount /dockerdata
-
 #resize LV
 lvextend -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv
 
 #portainer
-mkdir -p /dockerdata/$HOSTNAME-portainer/config
-echo -e "$portainerpw" > /dockerdata/$HOSTNAME-portainer/config/portainer_password
-docker run -d -p 9000:9000 --name=$HOSTNAME-portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /dockerdata/$HOSTNAME-portainer/data:/data -v /dockerdata/$HOSTNAME-portainer/config/portainer_password:/portainer_password:ro portainer/portainer-ce --admin-password-file portainer_password
+mkdir -p /dockerdata/portainer/config
+echo -e "$portainerpw" > /dockerdata/portainer/config/portainer_password
+docker run -d -p 9000:9000 --name=$HOSTNAME-portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /dockerdata/portainer/data:/data -v /dockerdata/portainer/config/portainer_password:/portainer_password:ro portainer/portainer-ce --admin-password-file portainer_password
 
 #apt cleanup
 apt autoremove -y
@@ -66,5 +59,4 @@ echo '"\e[A": history-search-backward
 "\e[B": history-search-forward' | tee -a /home/timherrm/.inputrc | tee -a /root/.inputrc >/dev/null
 
 
-#reboot
-
+reboot
