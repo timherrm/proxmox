@@ -58,5 +58,5 @@ fi' | tee -a /home/timherrm/.bashrc | tee -a /root/.bashrc >/dev/null
 echo '"\e[A": history-search-backward
 "\e[B": history-search-forward' | tee -a /home/timherrm/.inputrc | tee -a /root/.inputrc >/dev/null
 
-
+history -c
 reboot
