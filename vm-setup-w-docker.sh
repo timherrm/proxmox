@@ -27,7 +27,7 @@ lvextend -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv
 #portainer
 mkdir -p /dockerdata/portainer/config
 echo -e "$portainerpw" > /dockerdata/portainer/config/portainer_password
-docker run -d -p 9000:9000 --name=$HOSTNAME-portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /dockerdata/portainer/data:/data -v /dockerdata/portainer/config/portainer_password:/portainer_password:ro portainer/portainer-ce --admin-password-file portainer_password
+docker run -d -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /dockerdata/portainer/data:/data -v /dockerdata/portainer/config/portainer_password:/portainer_password:ro portainer/portainer-ce --admin-password-file portainer_password
 
 #apt cleanup
 apt autoremove -y
