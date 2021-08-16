@@ -16,6 +16,10 @@ apt install vim unattended-upgrades qemu-guest-agent fail2ban -y
 apt autoremove -y
 apt autoclean -y
 
+#resize lvm
+lvextend -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv
+resize2fs -p /dev/mapper/ubuntu--vg-ubuntu--lv
+
 #config unattended-upgrades
 sed -i 's/0/1/g' /etc/apt/apt.conf.d/10periodic
 sed -i 's/^\/\/.*-updates.*$/        "${distro_id}:${distro_codename}-updates";/g' /etc/apt/apt.conf.d/50unattended-upgrades
